@@ -6,7 +6,8 @@ const router = express.Router();
 // Get Posts
 router.get('/', async (req, res) => {
   const posts = await loadPostsCollection();
-  res.send(await posts.find({}).toArray());
+  // res.send(await posts.find({}).toArray());
+  res.send('test');
 });
 
 // Add Post
@@ -27,14 +28,16 @@ router.delete('/:id', async (req, res) => {
 });
 
 async function loadPostsCollection() {
-  const client = await mongodb.MongoClient.connect(
-    'mongodb://YOUR_OWN_MONGODB',
-    {
-      useNewUrlParser: true
-    }
-  );
 
-  return client.db('vue_express').collection('posts');
+  // const client = await mongodb.MongoClient.connect(
+  //   'mongodb://YOUR_OWN_MONGODB',
+  //   {
+  //     useNewUrlParser: true
+  //   }
+  // );
+
+  // return client.db('vue_express').collection('posts');
+  return '[{"test"}]';
 }
 
 module.exports = router;

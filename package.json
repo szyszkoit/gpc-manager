@@ -2,7 +2,7 @@
   "name": "fullstack_vue_express",
   "version": "1.0.0",
   "description": "Full stack vue and express app",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js"
@@ -17,5 +17,13 @@
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradtraversy/microposts_fullstack_vue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bradtraversy/microposts_fullstack_vue/issues"
+  },
+  "homepage": "https://github.com/bradtraversy/microposts_fullstack_vue#readme"
 }

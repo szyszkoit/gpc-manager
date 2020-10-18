@@ -4,8 +4,8 @@ var mysql = require('mysql');
 var $sql = require('../db/sqlMap');
 var models = require('../db/db');
 // Connect to the database
-var conn = mysql.createConnection(models.mysql);
-conn.connect();
+var conn = mysql.createPool(models.mysql);
+// conn.connect();
 var jsonWrite = function(res, ret) {
     if(typeof ret === 'undefined') {
         res.json({

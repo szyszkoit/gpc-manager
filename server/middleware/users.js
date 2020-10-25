@@ -4,14 +4,14 @@ module.exports = {
     validateRegister: (req, res, next) => {
       // username min length 3
       if (!req.body.username || req.body.username.length < 3) {
-        return res.status(400).send({
-          msg: 'Please enter a username with min. 3 chars'
-        });
+       return res.status(400).json({
+         msg: 'Proszę podać nazwę o długości minimum 3 znaków.'
+       });
       }
       // password min 6 chars
       if (!req.body.password || req.body.password.length < 6) {
         return res.status(400).send({
-          msg: 'Please enter a password with min. 6 chars'
+          msg: 'Proszę podać hasło o długości minimum 6 znaków.'
         });
       }
       // password (repeat) does not match
@@ -20,7 +20,7 @@ module.exports = {
         req.body.password != req.body.password_repeat
       ) {
         return res.status(400).send({
-          msg: 'Both passwords must match'
+          msg: 'Hasła nie są identyczne!'
         });
       }
       next();
@@ -38,7 +38,7 @@ module.exports = {
         } catch (err) {
           console.log(err);
           return res.status(401).send({
-            msg: 'Your session is not valid!'
+            msg: 'Sesja wygasła!'
           });
         }
       }

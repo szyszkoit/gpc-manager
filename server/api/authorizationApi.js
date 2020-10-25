@@ -16,7 +16,7 @@ router.post('/sign-up', userMiddleware.validateRegister, (req, res, next) => {
         (err, result) => {
           if (result.length) {
             return res.status(409).send({
-              msg: 'This username is already in use!'
+              msg: 'Istnieje użytkownik o takiej nazwie!'
             });
           } else {
             // username is available
@@ -39,7 +39,7 @@ router.post('/sign-up', userMiddleware.validateRegister, (req, res, next) => {
                       });
                     }
                     return res.status(201).send({
-                      msg: 'Registered!'
+                      msg: 'Zarejestrowano!'
                     });
                   }
                 );
@@ -62,7 +62,7 @@ router.post('/login', (req, res, next) => {
           }
           if (!result.length) {
             return res.status(401).send({
-              msg: 'Username or password is incorrect!'
+              msg: 'Nazwa użytkownika lub hasło są niepoprawne!'
             });
           }
           // check password
@@ -74,7 +74,7 @@ router.post('/login', (req, res, next) => {
               if (bErr) {
                 throw bErr;
                 return res.status(401).send({
-                  msg: 'Username or password is incorrect!'
+                  msg: 'Nazwa użytkownika lub hasło są niepoprawne!'
                 });
               }
               if (bResult) {
@@ -96,7 +96,7 @@ router.post('/login', (req, res, next) => {
                 });
               }
               return res.status(401).send({
-                msg: 'Username or password is incorrect!'
+                msg: 'Nazwa użytkownika lub hasło są niepoprawne!'
               });
             }
           );
@@ -105,6 +105,6 @@ router.post('/login', (req, res, next) => {
 });
 router.get('/secret-route', userMiddleware.isLoggedIn, (req, res, next) => {
     console.log(req.userData);
-    res.send('This is the secret content. Only logged in users can see that!');
+    res.send('Tylko zalogowani użytkownicy mogą widzieć tą wiadomość.');
   });
 module.exports = router;

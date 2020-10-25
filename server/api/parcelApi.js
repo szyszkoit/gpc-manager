@@ -1,12 +1,12 @@
-var express = require('express');
-var router = express.Router();
-var mysql = require('mysql');
-var $sql = require('../db/sqlMap');
-var models = require('../db/db');
+const express = require('express');
+const router = express.Router();
+const mysql = require('mysql');
+const $sql = require('../db/sqlMap');
+const db = require('../db/db');
 // Connect to the database
-var conn = mysql.createPool(models.mysql);
+const conn = mysql.createPool(db.mysql);
 // conn.connect();
-var jsonWrite = function(res, ret) {
+const jsonWrite = function(res, ret) {
     if(typeof ret === 'undefined') {
         res.json({
             code: '1',

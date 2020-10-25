@@ -8,7 +8,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// const posts = require('./routes/api/posts');
+const authorization = require('./api/authorizationApi');
+app.use("/api", authorization);
 const parcelApi = require('./api/parcelApi');
 app.use("/api/parcel", parcelApi);
 

@@ -12,7 +12,8 @@ const authorization = require('./api/authorizationApi');
 app.use("/api", authorization);
 const parcelApi = require('./api/parcelApi');
 app.use("/api/parcel", parcelApi);
-
+const tankApi = require('./api/tankApi');
+app.use("/api/tank", tankApi);
 // Handle production
 if (process.env.NODE_ENV === 'production') {
   // Static folder

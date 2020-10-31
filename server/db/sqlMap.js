@@ -1,9 +1,7 @@
 var sqlMap = {
     parcel: {
         getList: 'select id, name, size from parcel',
-        getParcelTanks:'SELECT tank.id, tank.name, tank.slotId '+
-        'FROM tank '+
-        'where tank.parcelId = ? and tank.isExported = 0',
+        getParcelTanks:'SELECT id, name, slotId FROM tank where parcelId = ? and isExported = 0',
     },
     user: {
         add: 'insert into goods(id, name, price) values (0, ?, ?)'
@@ -21,7 +19,7 @@ var sqlMap = {
         getList: 'select id, name from dictionary_valve where deleted = 0'
     },
     tank: {
-        add:"INSERT INTO tank (name, parcelId, slotId, manufacturerId, capacityId, ownerId, valveId, pin, productionYear, comment, workComment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        add:"INSERT INTO tank(name, parcelId, slotId, manufacturerId, capacityId, ownerId, valveId, pin, productionYear, comment, workComment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         edit: "UPDATE tank SET name=?, parcelId=?, slotId=?, manufacturerId = ?, capacityId = ?, ownerId = ?, valveId = ?, pin = ?, productionYear = ?, comment = ?, workComment = ? WHERE id = ?",
         export:"UPDATE tank SET isExported = ?, city = ?, street = ? WHERE id = ?",
         deliver:"UPDATE tank SET isDelivered = 1 WHERE id = ?",

@@ -21,11 +21,11 @@ var sqlMap = {
         getList: 'select id, name from dictionary_valve where deleted = 0'
     },
     tank: {
-        add:"INSERT INTO `gpc_manager`.`tank` (`name`, `parcelId`, `slotId`, `manufacturerId`, `capacityId`, `ownerId`, `valveId`, `pin`, `productionYear`, `comment`, `workComment`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        edit: "UPDATE `gpc_manager`.`tank` SET name=?, parcelId=?, slotId=?, manufacturerId = ?, capacityId = ?, ownerId = ?, valveId = ?, pin = ?, productionYear = ?, comment = ?, workComment = ? WHERE id = ?",
-        export:"UPDATE `gpc_manager`.`tank` SET isExported = ?, city = ?, street = ? WHERE id = ?",
-        deliver:"UPDATE `gpc_manager`.`tank` SET isDelivered = 1 WHERE id = ?",
-        get:"select * from gpc_manager.tank where gpc_manager.tank.id = ?"
+        add:"INSERT INTO tank (name, parcelId, slotId, manufacturerId, capacityId, ownerId, valveId, pin, productionYear, comment, workComment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        edit: "UPDATE tank SET name=?, parcelId=?, slotId=?, manufacturerId = ?, capacityId = ?, ownerId = ?, valveId = ?, pin = ?, productionYear = ?, comment = ?, workComment = ? WHERE id = ?",
+        export:"UPDATE tank SET isExported = ?, city = ?, street = ? WHERE id = ?",
+        deliver:"UPDATE tank SET isDelivered = 1 WHERE id = ?",
+        get:"select * from tank where tank.id = ?"
     },
     onTheRoad: {
         getList: 'select id, name, city, street from tank where isExported = 1 and isDelivered = 0',

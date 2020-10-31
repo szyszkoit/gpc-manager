@@ -1,9 +1,9 @@
 var sqlMap = {
     parcel: {
         getList: 'select id, name, size from parcel',
-        getParcelTanks:'SELECT gpc_manager.tank.id, gpc_manager.tank.name, gpc_manager.tank.slotId '+
-        'FROM gpc_manager.tank '+
-        'where gpc_manager.tank.parcelId = ? and gpc_manager.tank.isExported = 0',
+        getParcelTanks:'SELECT tank.id, tank.name, tank.slotId '+
+        'FROM tank '+
+        'where tank.parcelId = ? and tank.isExported = 0',
     },
     user: {
         add: 'insert into goods(id, name, price) values (0, ?, ?)'

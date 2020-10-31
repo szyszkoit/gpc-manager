@@ -70,6 +70,45 @@ router.get('/get-valve-list', userMiddleware.isLoggedIn, (req, res) => {
         }
     })
 });
+router.get('/get/:id', userMiddleware.isLoggedIn, (req, res) => {
+    var sql = $sql.tank.get;
+    var params = req.body;
+    console.log(params);
+    conn.query(sql, req.params.id, function(err, result) {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            jsonWrite(res, result);
+        }
+    })
+});
+router.post('/add', userMiddleware.isLoggedIn, (req, res) => {
+    var sql = $sql.tank.add;
+    var params = req.body;
+    console.log(params);
+    conn.query(sql,
+        [
+            params.name,
+            params.parcelId,
+            params.slotId,
+            params.manufacturerId,
+            params.capacityId,
+            params.ownerId,
+            params.valveId,
+            params.pin,
+            params.productionYear,
+            params.comment,
+            params.workComment
+        ], function(err, result) {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            jsonWrite(res, result);
+        }
+    })
+});
 
 
 module.exports = router;

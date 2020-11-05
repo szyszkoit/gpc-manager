@@ -125,7 +125,9 @@ router.post('/add', userMiddleware.isLoggedIn, (req, res) => {
             params.pin,
             params.productionYear,
             params.comment,
-            params.workComment
+            params.workComment,
+            params.backgroundColor,
+            params.invoice
         ], function(err, result) {
         if (err) {
             console.log(err);
@@ -152,6 +154,8 @@ router.post('/edit', userMiddleware.isLoggedIn, (req, res) => {
             params.productionYear,
             params.comment,
             params.workComment,
+            params.backgroundColor,
+            params.invoice,
             params.id,
         ], function(err, result) {
         if (err) {
@@ -165,12 +169,15 @@ router.post('/edit', userMiddleware.isLoggedIn, (req, res) => {
 router.post('/export', userMiddleware.isLoggedIn, (req, res) => {
     var sql = $sql.tank.export;
     var params = req.body;
-    console.log(params);
+    exportDate = new Date(params.exportDate);
+    // exportDate.setHours(exportDate.getHours()+1);
+    console.log(exportDate);
     conn.query(sql,
         [
             params.isExported,
             params.city,
             params.street,
+            exportDate,
             params.id,
         ], function(err, result) {
         if (err) {

@@ -113,58 +113,14 @@ router.post('/add', userMiddleware.isLoggedIn, (req, res) => {
     var sql = $sql.tank.add;
     var params = req.body;
     console.log(params);
-    conn.query(sql,
-        [
-            params.name,
-            params.parcelId,
-            params.slotId,
-            params.manufacturerId,
-            params.capacityId,
-            params.ownerId,
-            params.valveId,
-            params.pin,
-            params.productionYear,
-            params.comment,
-            params.workComment,
-            params.backgroundColor,
-            params.invoice
-        ], function(err, result) {
-        if (err) {
-            console.log(err);
-        }
-        if (result) {
-            jsonWrite(res, result);
-        }
-    })
+    addTank(params, sql, res);
+
 });
 router.post('/edit', userMiddleware.isLoggedIn, (req, res) => {
     var sql = $sql.tank.edit;
     var params = req.body;
     console.log(params);
-    conn.query(sql,
-        [
-            params.name,
-            params.parcelId,
-            params.slotId,
-            params.manufacturerId,
-            params.capacityId,
-            params.ownerId,
-            params.valveId,
-            params.pin,
-            params.productionYear,
-            params.comment,
-            params.workComment,
-            params.backgroundColor,
-            params.invoice,
-            params.id,
-        ], function(err, result) {
-        if (err) {
-            console.log(err);
-        }
-        if (result) {
-            jsonWrite(res, result);
-        }
-    })
+    editTank(params, sql, res);
 });
 router.post('/export', userMiddleware.isLoggedIn, (req, res) => {
     var sql = $sql.tank.export;
@@ -204,6 +160,197 @@ router.post('/deliver', userMiddleware.isLoggedIn, (req, res) => {
         }
     })
 });
-
+function addTank(params, sql, res){
+    if(typeof params.manufacturerId == 'string'){
+        addManufacturer(params.manufacturerId)
+        .then((result)=>{
+            params.manufacturerId = result;
+            console.log(params.manufacturerId);
+            addTank(params, sql, res);
+        });
+    }else if(typeof params.capacityId == 'string'){
+        addCapacity(params.capacityId)
+        .then((result)=>{
+            params.capacityId = result;
+            console.log(result);
+            addTank(params, sql, res);
+        });;
+        // console.log(capacityId);
+    }else if(typeof params.ownerId == 'string'){
+        addOwner(params.ownerId)
+        .then((result)=>{
+            params.ownerId = result;
+            console.log(result);
+            addTank(params, sql, res);
+        });;
+        // console.log(ownerId);
+    }else if(typeof params.valveId == 'string'){
+        addValve(params.valveId)
+        .then((result)=>{
+            params.valveId = result;
+            console.log(result);
+            addTank(params, sql, res);
+        });
+        // console.log(valveId);
+    }else{
+    console.log('paramsy'+params.manufacturerId);
+    conn.query(sql,
+        [
+            params.name,
+            params.parcelId,
+            params.slotId,
+            params.manufacturerId,
+            params.capacityId,
+            params.ownerId,
+            params.valveId,
+            params.pin,
+            params.productionYear,
+            params.comment,
+            params.workComment,
+            params.backgroundColor,
+            params.invoice
+        ], function(err, result) {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            console.log(result+'jyjty');
+            jsonWrite(res, result);
+        }
+    })
+    }
+}
+function editTank(params, sql, res){
+    if(typeof params.manufacturerId == 'string'){
+        addManufacturer(params.manufacturerId)
+        .then((result)=>{
+            params.manufacturerId = result;
+            console.log(params.manufacturerId);
+            editTank(params, sql, res);
+        });
+    }else if(typeof params.capacityId == 'string'){
+        addCapacity(params.capacityId)
+        .then((result)=>{
+            params.capacityId = result;
+            console.log(result);
+            editTank(params, sql, res);
+        });;
+        // console.log(capacityId);
+    }else if(typeof params.ownerId == 'string'){
+        addOwner(params.ownerId)
+        .then((result)=>{
+            params.ownerId = result;
+            console.log(result);
+            editTank(params, sql, res);
+        });;
+        // console.log(ownerId);
+    }else if(typeof params.valveId == 'string'){
+        addValve(params.valveId)
+        .then((result)=>{
+            params.valveId = result;
+            console.log(result);
+            editTank(params, sql, res);
+        });
+        // console.log(valveId);
+    }else{
+    console.log('paramsy'+params.manufacturerId);
+    conn.query(sql,
+        [
+            params.name,
+            params.parcelId,
+            params.slotId,
+            params.manufacturerId,
+            params.capacityId,
+            params.ownerId,
+            params.valveId,
+            params.pin,
+            params.productionYear,
+            params.comment,
+            params.workComment,
+            params.backgroundColor,
+            params.invoice,
+            params.id,
+        ], function(err, result) {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            console.log(result+'jyjty');
+            jsonWrite(res, result);
+        }
+    })
+    }
+}
+function addManufacturer(value) {
+    return promise = new Promise( function(resolve, reject) {
+        var sql = $sql.manufacturer.add;
+        conn.query(sql, value,  function (err, result) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(JSON.parse(JSON.stringify(result)).insertId);
+        }
+      });
+   })
+    // var sql = $sql.manufacturer.add;
+    // conn.query(sql, value, function(err, result) {
+    //     if (err) throw err;
+    //     return JSON.parse(JSON.stringify(result)).insertId;
+    // });
+};
+function addCapacity(value) {
+    return promise = new Promise( function(resolve, reject) {
+        var sql = $sql.capacity.add;
+        conn.query(sql, value,  function (err, result) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(JSON.parse(JSON.stringify(result)).insertId);
+        }
+      });
+   })
+    // var sql = $sql.capacity.add;
+    // conn.query(sql, value, function(err, result) {
+    //     if (err) throw err;
+    //     // console.log(JSON.parse(JSON.stringify(result))).insertId;
+    //     return JSON.parse(JSON.stringify(result)).insertId;
+    // });
+};
+function addOwner(value) {
+    return promise = new Promise( function(resolve, reject) {
+        var sql = $sql.owner.add;
+        conn.query(sql, value,  function (err, result) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(JSON.parse(JSON.stringify(result)).insertId);
+        }
+      });
+   })
+    // var sql = $sql.owner.add;
+    // conn.query(sql, value, function(err, result) {
+    //     if (err) throw err;
+    //     // console.log(JSON.parse(JSON.stringify(result))).insertId;
+    //     return JSON.parse(JSON.stringify(result)).insertId;
+    // });
+};
+function addValve(value) {
+    return promise = new Promise( function(resolve, reject) {
+        var sql = $sql.valve.add;
+        conn.query(sql, value,  function (err, result) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(JSON.parse(JSON.stringify(result)).insertId);
+        }
+      });
+   })
+    // var sql = $sql.valve.add;
+    // return conn.query(sql, value, function(err, result) {
+    //     if (err) throw err;
+    //     // console.log(JSON.parse(JSON.stringify(result))).insertId;
+    //     return JSON.parse(JSON.stringify(result)).insertId;
+    // });
+};
 
 module.exports = router;

@@ -1,7 +1,7 @@
 var sqlMap = {
     parcel: {
         getList: 'select id, name, size from parcel',
-        getParcelTanks:'SELECT id, name, slotId, backgroundColor FROM tank where parcelId = ? and isExported = 0',
+        getParcelTanks:'SELECT id, name, slotId, pin, backgroundColor FROM tank where parcelId = ? and isExported = 0',
     },
     user: {
         add: 'insert into goods(id, name, price) values (0, ?, ?)'
@@ -23,10 +23,10 @@ var sqlMap = {
         add: 'insert into dictionary_valve (name) values (?)'
     },
     tank: {
-        add:"INSERT INTO tank(name, parcelId, slotId, manufacturerId, capacityId, ownerId, valveId, pin, productionYear, comment, workComment, backgroundColor, invoice, installation, transportComment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        edit: "UPDATE tank SET name=?, parcelId=?, slotId=?, manufacturerId = ?, capacityId = ?, ownerId = ?, valveId = ?, pin = ?, productionYear = ?, comment = ?, workComment = ?, backgroundColor = ?, invoice = ?, installation = ?, transportComment = ? WHERE id = ?",
-        export:"UPDATE tank SET isExported = ?, city = ?, street = ?, installation = ?, transportComment = ?, exportDate = ? WHERE id = ?",
-        deliver:"UPDATE tank SET isDelivered = 1, deliverDate = ? WHERE id = ?",
+        add:"INSERT INTO tank(name, parcelId, slotId, manufacturerId, capacityId, ownerId, valveId, pin, productionYear, comment, workComment, backgroundColor, invoice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        edit: "UPDATE tank SET name=?, parcelId=?, slotId=?, manufacturerId = ?, capacityId = ?, ownerId = ?, valveId = ?, pin = ?, productionYear = ?, comment = ?, workComment = ?, backgroundColor = ?, invoice = ? WHERE id = ?",
+        export:"UPDATE tank SET isExported = ?, city = ?, street = ?, exportDate = ? WHERE id = ?",
+        deliver:"UPDATE tank SET isDelivered = 1, deliverDate = ?, installation = ?, transportComment = ? WHERE id = ?",
         move:"UPDATE tank SET parcelId = ?, slotId = ? WHERE parcelId = ? AND slotId = ?",
         // get:"select * from tank where tank.id = ?",
         get:
@@ -44,7 +44,6 @@ var sqlMap = {
         't.workComment, '+
         't.backgroundColor, '+
         't.invoice, '+
-        't.installation, '+
         't.transportComment '+
         'FROM tank t '+
         'LEFT JOIN dictionary_manufacturer dm ON dm.id = t.manufacturerId '+
@@ -60,8 +59,6 @@ var sqlMap = {
         't.name, '+
         't.city, '+
         't.street, '+
-        't.installation, '+
-        't.transportComment, '+
         't.exportDate, '+
         'dm.name as manufacturer '+
         'FROM tank t '+

@@ -133,8 +133,6 @@ router.post('/export', userMiddleware.isLoggedIn, (req, res) => {
             params.isExported,
             params.city,
             params.street,
-            params.installation,
-            params.transportComment,
             exportDate,
             params.id,
         ], function(err, result) {
@@ -153,6 +151,8 @@ router.post('/deliver', userMiddleware.isLoggedIn, (req, res) => {
     conn.query(sql,
         [
             params.deliverDate,
+            params.installation,
+            params.transportComment,
             params.id,
         ], function(err, result) {
         if (err) {
@@ -228,8 +228,6 @@ function addTank(params, sql, res){
             params.workComment,
             params.backgroundColor,
             params.invoice,
-            params.installation,
-            params.transportComment,
         ], function(err, result) {
         if (err) {
             console.log(err);
@@ -287,8 +285,6 @@ function editTank(params, sql, res){
             params.workComment,
             params.backgroundColor,
             params.invoice,
-            params.installation,
-            params.transportComment,
             params.id,
         ], function(err, result) {
         if (err) {

@@ -127,12 +127,14 @@ router.post('/export', userMiddleware.isLoggedIn, (req, res) => {
     var params = req.body;
     exportDate = new Date(params.exportDate);
     // exportDate.setHours(exportDate.getHours()+1);
-    console.log(exportDate);
+    console.log(params);
     conn.query(sql,
         [
             params.isExported,
             params.city,
             params.street,
+            params.installation,
+            params.transportComment,
             exportDate,
             params.id,
         ], function(err, result) {
@@ -150,7 +152,27 @@ router.post('/deliver', userMiddleware.isLoggedIn, (req, res) => {
     console.log(params);
     conn.query(sql,
         [
+            params.deliverDate,
             params.id,
+        ], function(err, result) {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            jsonWrite(res, result);
+        }
+    })
+});
+router.post('/move', userMiddleware.isLoggedIn, (req, res) => {
+    var sql = $sql.tank.move;
+    var params = req.body;
+    console.log(params);
+    conn.query(sql,
+        [
+            params.moveTo.parcelId,
+            params.moveTo.slotId,
+            params.currentSlot.parcelId,
+            params.currentSlot.slotId,
         ], function(err, result) {
         if (err) {
             console.log(err);
@@ -174,8 +196,7 @@ function addTank(params, sql, res){
             params.capacityId = result;
             console.log(result);
             addTank(params, sql, res);
-        });;
-        // console.log(capacityId);
+        });
     }else if(typeof params.ownerId == 'string'){
         addOwner(params.ownerId)
         .then((result)=>{
@@ -183,7 +204,6 @@ function addTank(params, sql, res){
             console.log(result);
             addTank(params, sql, res);
         });;
-        // console.log(ownerId);
     }else if(typeof params.valveId == 'string'){
         addValve(params.valveId)
         .then((result)=>{
@@ -191,7 +211,6 @@ function addTank(params, sql, res){
             console.log(result);
             addTank(params, sql, res);
         });
-        // console.log(valveId);
     }else{
     console.log('paramsy'+params.manufacturerId);
     conn.query(sql,
@@ -208,7 +227,9 @@ function addTank(params, sql, res){
             params.comment,
             params.workComment,
             params.backgroundColor,
-            params.invoice
+            params.invoice,
+            params.installation,
+            params.transportComment,
         ], function(err, result) {
         if (err) {
             console.log(err);
@@ -235,7 +256,6 @@ function editTank(params, sql, res){
             console.log(result);
             editTank(params, sql, res);
         });;
-        // console.log(capacityId);
     }else if(typeof params.ownerId == 'string'){
         addOwner(params.ownerId)
         .then((result)=>{
@@ -243,7 +263,6 @@ function editTank(params, sql, res){
             console.log(result);
             editTank(params, sql, res);
         });;
-        // console.log(ownerId);
     }else if(typeof params.valveId == 'string'){
         addValve(params.valveId)
         .then((result)=>{
@@ -251,7 +270,6 @@ function editTank(params, sql, res){
             console.log(result);
             editTank(params, sql, res);
         });
-        // console.log(valveId);
     }else{
     console.log('paramsy'+params.manufacturerId);
     conn.query(sql,
@@ -269,6 +287,8 @@ function editTank(params, sql, res){
             params.workComment,
             params.backgroundColor,
             params.invoice,
+            params.installation,
+            params.transportComment,
             params.id,
         ], function(err, result) {
         if (err) {
@@ -292,11 +312,6 @@ function addManufacturer(value) {
         }
       });
    })
-    // var sql = $sql.manufacturer.add;
-    // conn.query(sql, value, function(err, result) {
-    //     if (err) throw err;
-    //     return JSON.parse(JSON.stringify(result)).insertId;
-    // });
 };
 function addCapacity(value) {
     return promise = new Promise( function(resolve, reject) {
@@ -309,12 +324,6 @@ function addCapacity(value) {
         }
       });
    })
-    // var sql = $sql.capacity.add;
-    // conn.query(sql, value, function(err, result) {
-    //     if (err) throw err;
-    //     // console.log(JSON.parse(JSON.stringify(result))).insertId;
-    //     return JSON.parse(JSON.stringify(result)).insertId;
-    // });
 };
 function addOwner(value) {
     return promise = new Promise( function(resolve, reject) {
@@ -327,12 +336,6 @@ function addOwner(value) {
         }
       });
    })
-    // var sql = $sql.owner.add;
-    // conn.query(sql, value, function(err, result) {
-    //     if (err) throw err;
-    //     // console.log(JSON.parse(JSON.stringify(result))).insertId;
-    //     return JSON.parse(JSON.stringify(result)).insertId;
-    // });
 };
 function addValve(value) {
     return promise = new Promise( function(resolve, reject) {
@@ -345,12 +348,6 @@ function addValve(value) {
         }
       });
    })
-    // var sql = $sql.valve.add;
-    // return conn.query(sql, value, function(err, result) {
-    //     if (err) throw err;
-    //     // console.log(JSON.parse(JSON.stringify(result))).insertId;
-    //     return JSON.parse(JSON.stringify(result)).insertId;
-    // });
 };
 
 module.exports = router;

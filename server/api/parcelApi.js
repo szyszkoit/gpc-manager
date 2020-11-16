@@ -67,6 +67,10 @@ router.get('/get-parcel-list', (req, res) => {
         return getParcelTanksList(arr[4].id);
     }).then(function (result) {
         arr[4].slots = result;
+        return getParcelTanksList(arr[5].id);
+        jsonWrite(res, arr);
+    }).then(function (result) {
+        arr[5].slots = result;
         jsonWrite(res, arr);
     });
     // conn.query(sql, [params.name, params.price], function(err, result) {

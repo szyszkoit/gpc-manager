@@ -4,8 +4,8 @@
   "description": "Full stack vue and express app",
   "main": "server/index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "dev": "nodemon server/index.js"
+    "start": "node server/index.js --scripts-prepend-node-path",
+    "dev": "npm run clean"
   },
   "author": "Brad Traversy",
   "license": "MIT",
@@ -14,8 +14,12 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
+    "nodemon": "^1.18.4",
+    "path": "^0.12.7",
     "uuid": "^8.3.1",
     "vee-validate": "^3.4.3",
     "vue-full-loading": "^1.2.1",

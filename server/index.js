@@ -1,9 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+var fs = require('fs')
+var morgan = require('morgan')
+var path = require('path')
 
-const app = express();
+var app = express()
 
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+
+// setup the logger
+app.use(morgan('combined', { stream: accessLogStream }))
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
@@ -20,7 +28,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(__dirname + '/public/'));
 
   // Handle SPA
-  app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
+  app.get(/.*/, (req, res) => res.sendFile('./public/index.html'));
 }
 
 const port = process.env.PORT || 5001;

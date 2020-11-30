@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.ed561f154cbb503d49243d692068def5.js"
+  "/precache-manifest.ff0f417ba8566dd38a8641d69939444d.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "gpc"});

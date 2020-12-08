@@ -34,9 +34,12 @@ var sqlMap = {
         't.name, '+
         't.parcelId, '+
         't.slotId, '+
-        'dm.name as manufacturerId, '+
-        'dc.name as capacityId, '+
-        'do.name as ownerId, '+
+        'dm.id as manufacturerId, '+
+        'dm.name as manufacturerName, '+
+        'dc.id as capacityId, '+
+        'dc.name as capacityName, '+
+        'do.id as ownerId, '+
+        'do.name as ownerName, '+
         'dv.name as valveId, '+
         't.pin, '+
         't.productionYear, '+

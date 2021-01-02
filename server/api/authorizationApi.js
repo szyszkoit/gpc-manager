@@ -6,7 +6,18 @@ const uuid = require('uuid');
 const jwt = require('jsonwebtoken');
 const db = require('../db/db.js');
 const mysql = require('mysql');
+const $sql = require('../db/sqlMap');
 const userMiddleware = require('../middleware/users.js');
+const jsonWrite = function(res, ret) {
+  if(typeof ret === 'undefined') {
+      res.json({
+          code: '1',
+          msg: 'operation failed'
+      });
+  } else {
+      res.json(ret);
+  }
+};
 var conn = mysql.createPool(db.mysql);
 router.post('/sign-up', userMiddleware.validateRegister, (req, res, next) => {
     conn.query(
@@ -28,9 +39,11 @@ router.post('/sign-up', userMiddleware.validateRegister, (req, res, next) => {
               } else {
                 // has hashed pw => add to database
                 conn.query(
-                  `INSERT INTO user (id, username, password, registered) VALUES ('${uuid.v4()}', ${conn.escape(
+                  `INSERT INTO user (id, username, password, registered, userRole) VALUES ('${uuid.v4()}', ${conn.escape(
                     req.body.username
-                  )}, ${conn.escape(hash)}, now())`,
+                  )}, ${conn.escape(hash)}, now(), ${conn.escape(
+                    req.body.userRole
+                  )})`,
                   (err, result) => {
                     if (err) {
                       throw err;
@@ -107,4 +120,63 @@ router.get('/secret-route', userMiddleware.isLoggedIn, (req, res, next) => {
     console.log(req.userData);
     res.send('Tylko zalogowani użytkownicy mogą widzieć tą wiadomość.');
   });
+
+router.post('/edit-user', userMiddleware.isLoggedIn, (req, res) => {
+  var sql = $sql.user.edit;
+  var params = req.body;
+  console.log(params);
+  bcrypt.hash(req.body.password, 10, (err, hash) => {
+    if (err) {
+      return res.status(500).send({
+        msg: err
+      });
+    } else {
+      // has hashed pw => add to database
+      conn.query(
+        `UPDATE user SET password = ${conn.escape(hash)}, userRole = ${conn.escape(
+          req.body.userRole
+        )} WHERE id = ${conn.escape(
+          req.body.userId
+        )}`,
+        (err, result) => {
+          if (err) {
+            throw err;
+            return res.status(400).send({
+              msg: err
+            });
+          }
+          return res.status(201).send({
+            msg: 'Success!'
+          });
+        }
+      );
+    }
+  });
+});
+router.get('/get-user-groups-list', userMiddleware.isLoggedIn, (req, res) => {
+  var sql = $sql.user.getUserGroupsList;
+  var params = req.body;
+  console.log(params);
+  conn.query(sql, function(err, result) {
+      if (err) {
+          console.log(err);
+      }
+      if (result) {
+          jsonWrite(res, result);
+      }
+  })
+});
+router.get('/get-users-list', userMiddleware.isLoggedIn, (req, res) => {
+  var sql = $sql.user.getUsersList;
+  var params = req.body;
+  console.log(params);
+  conn.query(sql, function(err, result) {
+      if (err) {
+          console.log(err);
+      }
+      if (result) {
+          jsonWrite(res, result);
+      }
+  })
+});
 module.exports = router;

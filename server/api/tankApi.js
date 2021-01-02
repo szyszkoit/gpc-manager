@@ -70,6 +70,19 @@ router.get('/get-valve-list', userMiddleware.isLoggedIn, (req, res) => {
         }
     })
 });
+router.get('/get-tanks-list', userMiddleware.isLoggedIn, (req, res) => {
+    var sql = $sql.tank.getActiveTanksList;
+    var params = req.body;
+    console.log(params);
+    conn.query(sql, function(err, result) {
+        if (err) {
+            console.log(err);
+        }
+        if (result) {
+            jsonWrite(res, result);
+        }
+    })
+});
 router.get('/get-exported-tanks', userMiddleware.isLoggedIn, (req, res) => {
     var sql = $sql.onTheRoad.getList;
     var params = req.body;
@@ -83,11 +96,27 @@ router.get('/get-exported-tanks', userMiddleware.isLoggedIn, (req, res) => {
         }
     })
 });
-router.get('/get-delivered-tanks', userMiddleware.isLoggedIn, (req, res) => {
-    var sql = $sql.history.getList;
+
+router.post('/get-delivered-tanks', userMiddleware.isLoggedIn, (req, res) => {
+    var sql;
     var params = req.body;
     console.log(params);
-    conn.query(sql, function(err, result) {
+    if(params.from == null && params.to == null){
+        sql = $sql.history.getList;
+    } else if(params.from == null){
+        params.from = new Date();
+        sql = $sql.history.getListBetween;
+    } else if(params.to == null) {
+        params.to = new Date();
+        sql = $sql.history.getListBetween;
+    }else{
+        sql = $sql.history.getListBetween;
+    }
+    conn.query(sql,
+        [
+            params.from,
+            params.to,
+        ], function(err, result) {
         if (err) {
             console.log(err);
         }

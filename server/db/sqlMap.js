@@ -98,7 +98,7 @@ var sqlMap = {
     },
     history: {
         getList: 'select * from tank where isDelivered = 1',
-        getListBetween: " select * from tank where isDelivered = 1 AND deliverDate BETWEEN ? AND ?",
+        getListBetween: " select * from tank where isDelivered = 1 AND deliverDate BETWEEN ? AND DATE_ADD(?, INTERVAL 1 DAY)",
     }
 }
 module.exports = sqlMap;
